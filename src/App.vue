@@ -15,7 +15,7 @@ if (email.value.length == 0) {
     <BaseHeader />
     <div style="display: flex">
       <el-row justify="center" style="width: 100%">
-        <el-col :xs="24" :sm="20" :md="15" :lg="15" :xl="15">
+        <el-col :xs="22" :sm="20" :md="15" :lg="15" :xl="15">
           <router-view />  
         </el-col>
       </el-row>
