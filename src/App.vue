@@ -1,12 +1,24 @@
+<script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useUserStore } from "~/stores/user";
+import router from "./router";
+
+const { email } = storeToRefs(useUserStore());
+
+if (email.value.length == 0) {
+  router.push("/login");
+}
+</script>
+
 <template>
   <el-config-provider namespace="ep">
     <BaseHeader />
     <div style="display: flex">
-      <BaseSide />
-      <div>
-        <img alt="Vue logo" class="element-plus-logo" src="./assets/logo.png" />
-        <HelloWorld msg="Hello Vue 3.0 + Element Plus + Vite" />
-      </div>
+      <el-row justify="center" style="width: 100%">
+        <el-col :xs="24" :sm="20" :md="15" :lg="15" :xl="15">
+          <router-view />  
+        </el-col>
+      </el-row>
     </div>
   </el-config-provider>
 </template>
@@ -15,9 +27,5 @@
 #app {
   text-align: center;
   color: var(--ep-text-color-primary);
-}
-
-.element-plus-logo {
-  width: 50%;
 }
 </style>
