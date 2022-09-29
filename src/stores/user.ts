@@ -8,7 +8,7 @@ export const useUserStore = defineStore("user", {
       email: user.email || "",
       admin: user.admin || false,
       max_page: user.max_page || 0,
-    }
+    };
   },
   getters: {
     isAdmin: (state) => state.admin,
@@ -25,17 +25,21 @@ export const useUserStore = defineStore("user", {
     async login(email: string, password: string) {
       const result = await postData("/api/login", { email, password });
       const data = result.data;
-      this.email = email;
+      this.email = data.email;
       this.admin = data.admin;
       this.max_page = data.max_page;
-      localStorage.setItem("user", JSON.stringify({
-        email,
-        admin: this.admin,
-        max_page: this.max_page
-      }))
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          email,
+          admin: this.admin,
+          max_page: this.max_page,
+        })
+      );
     },
     async logout() {
       localStorage.removeItem("user");
+      await postData("/api/logout");
       this.email = "";
       this.admin = false;
       this.max_page = 0;

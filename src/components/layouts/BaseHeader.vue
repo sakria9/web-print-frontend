@@ -7,13 +7,21 @@ const { email } = storeToRefs(useUserStore());
 
 <template>
   <el-menu class="el-menu-demo" mode="horizontal">
-    <router-link to="/">
+    <router-link to="/" style="text-decoration: none">
       <el-menu-item index="1">SUSTech</el-menu-item>
     </router-link>
-    <router-link to="/user" v-if="email.length != 0">
+    <router-link
+      to="/user"
+      v-if="email.length != 0"
+      style="text-decoration: none"
+    >
       <el-menu-item index="4">{{ email }}</el-menu-item>
     </router-link>
-    <router-link to="/login" v-if="email.length == 0">
+    <router-link
+      to="/login"
+      v-if="email.length == 0"
+      style="text-decoration: none"
+    >
       <el-menu-item index="4">Login</el-menu-item>
     </router-link>
     <el-menu-item h="full" @click="toggleDark()">

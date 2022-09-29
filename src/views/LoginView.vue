@@ -3,6 +3,7 @@ import { onUpdated, reactive, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/user";
 import router from "~/router";
+import { ElMessage } from "element-plus";
 
 const { email, admin, max_page } = storeToRefs(useUserStore());
 const { login, logout } = useUserStore();
@@ -11,8 +12,10 @@ const form = reactive({
   email: "",
   password: "",
 });
-const onSubmit = () => {
-  login(form.email, form.password);
+const onSubmit = async () => {
+  login(form.email, form.password).catch((e) => {
+    ElMessage.error(`Login failed: ${e}`);
+  });
 };
 
 onUpdated(() => {
