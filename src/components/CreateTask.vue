@@ -71,9 +71,9 @@ const createTask = async () => {
     body: formData,
   });
   if (result.ok) {
-    get();
     upload.value!.clearFiles();
     pdfFile.value = undefined;
+    await get();
   } else {
     try {
       const data = await result.json();
