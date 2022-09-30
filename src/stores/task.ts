@@ -11,9 +11,12 @@ export interface Task {
 }
 
 export const useTaskStore = defineStore("task", {
-  state: () => ({
-    tasks: [] as Task[],
-  }),
+  state: () => {
+    return {
+      tasks: [] as Task[],
+      all_tasks: [] as Task[],
+    };
+  },
   getters: {},
   actions: {
     async get() {
@@ -21,6 +24,13 @@ export const useTaskStore = defineStore("task", {
       if (result.ok) {
         let data = await result.json();
         this.tasks = data.data;
+      }
+    },
+    async getAll() {
+      const result = await fetch("/api/admin/list-task");
+      if (result.ok) {
+        let data = await result.json();
+        this.all_tasks = data.data;
       }
     },
     async cancel(id: number): Promise<boolean> {

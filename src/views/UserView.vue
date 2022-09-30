@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ServerInfo from "~/components/ServerInfo.vue";
 import { onBeforeMount, onUpdated, reactive, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/user";
@@ -6,35 +7,18 @@ import { useServerStore } from "~/stores/server";
 import router from "~/router";
 import { postData } from "~/utils/post";
 import { ElMessage } from "element-plus";
+import { useTaskStore } from "~/stores/task";
 
 const { email, admin, max_page } = storeToRefs(useUserStore());
 const { get, logout } = useUserStore();
 
-const { pending_pages, pending_tasks, enable_print, ready } = storeToRefs(
-  useServerStore()
-);
-const serverStore = useServerStore();
+const { all_tasks } = storeToRefs(useTaskStore());
+const { getAll, cancel } = useTaskStore();
 
 onUpdated(() => {
   if (email.value.length == 0) {
     router.push("/login");
   }
-});
-
-const enablePrint = async () => {
-  serverStore
-    .enablePrint()
-    .then(() => ElMessage.success("Enable print"))
-    .catch(() => ElMessage.error("Failed to enable print"));
-};
-const disablePrint = () => {
-  serverStore
-    .disablePrint()
-    .then(() => ElMessage.success("Disable print"))
-    .catch(() => ElMessage.error("Failed to disable print"));
-};
-onBeforeMount(() => {
-  serverStore.get();
 });
 
 const userForm = reactive({
@@ -100,22 +84,8 @@ const changePassword = async () => {
 
   <div v-if="admin">
     <el-card class="box-card margin-top">
-      <el-descriptions title="Server Info">
-        <el-descriptions-item label="Pending Pages">{{
-          ready ? pending_pages : "Loading..."
-        }}</el-descriptions-item>
-        <el-descriptions-item label="Pending Tasks">{{
-          ready ? pending_tasks : "Loading..."
-        }}</el-descriptions-item>
-        <el-descriptions-item label="Enable Print">{{
-          ready ? enable_print : "Loading..."
-        }}</el-descriptions-item>
-      </el-descriptions>
-      <el-button @click="enablePrint()">Enable Print</el-button>
-      <el-button @click="disablePrint()">Disable Print</el-button>
-      <el-button @click="serverStore.get()">Refresh</el-button>
+      <ServerInfo :is_admin="true" />
     </el-card>
-
     <el-card class="box-card margin-top">
       <el-form :model="userForm" label-width="120px" class="margin-top">
         <el-form-item label="Email">
@@ -136,6 +106,14 @@ const changePassword = async () => {
           >
         </el-form-item>
       </el-form>
+    </el-card>
+    <el-card class="box-card margin-top">
+      <Tasks
+        :tasks="all_tasks"
+        :get="getAll"
+        :cancel="cancel"
+        :show_email="true"
+      />
     </el-card>
   </div>
 </template>
