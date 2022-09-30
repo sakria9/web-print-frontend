@@ -91,13 +91,16 @@ const cancelTask = async (id: number) => {
 </template>
 
 <style>
-.warning-row {
-  background-color: #3e301c !important;
-}
 .success-row {
-  background-color: #25371c !important;
+  background-color: var(--el-color-success-light-7) !important;
+}
+.warning-row {
+  background-color: var(--el-color-warning-light-7) !important;
 }
 .cancel-row {
-  color: #2d2d2f !important;
+  color: #c0c4cc !important;
+}
+.dark .cancel-row {
+  color: #6c6e72 !important;
 }
 </style>

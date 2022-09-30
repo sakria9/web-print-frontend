@@ -27,3 +27,13 @@ code {
 .margin-top {
   margin-top: 20px;
 }
+
+.dark {
+  --el-color-success-light-7: #2d481f;
+  --el-color-warning-light-7: #533f20;
+}
+
+html {
+  --el-color-success-light-7: #d1edc4;
+  --el-color-warning-light-7: #f8e3c5;
+}
