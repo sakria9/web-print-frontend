@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
+import router from "~/router";
 import { postData } from "~/utils/post";
+import { useUserStore } from "./user";
 
 export interface Task {
   id: number;
@@ -21,6 +23,11 @@ export const useTaskStore = defineStore("task", {
   actions: {
     async get() {
       const result = await fetch("/api/task/list");
+      if (result.status == 401) {
+        const { logout } = useUserStore();
+        logout();
+        router.push("/login");
+      }
       if (result.ok) {
         let data = await result.json();
         this.tasks = data.data;
