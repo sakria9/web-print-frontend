@@ -4,13 +4,16 @@ import Tasks from "~/components/Tasks.vue";
 import CreateTask from "~/components/CreateTask.vue";
 import { storeToRefs } from "pinia";
 import { useTaskStore } from "~/stores/task";
-import { onBeforeMount } from "vue";
+import { onBeforeUnmount } from "vue";
 
 const { tasks } = storeToRefs(useTaskStore());
 const { get, cancel } = useTaskStore();
 
-onBeforeMount(() => {
+const taskGetInterval = setInterval(() => {
   get();
+}, 1000);
+onBeforeUnmount(() => {
+  clearInterval(taskGetInterval);
 });
 </script>
 
@@ -19,7 +22,7 @@ onBeforeMount(() => {
     <ServerInfo :is_admin="false" />
   </el-card>
   <el-card class="box-card margin-top">
-    <Tasks :tasks="tasks" :get="get" :cancel="cancel" :show_email="false"/>
+    <Tasks :tasks="tasks" :get="get" :cancel="cancel" :show_email="false" />
   </el-card>
   <div class="margin-top">
     <CreateTask />
